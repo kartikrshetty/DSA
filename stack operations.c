@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdilb.h>
 #define max 4
 
 int stack[max];
