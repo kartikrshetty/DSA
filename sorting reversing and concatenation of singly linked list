@@ -1,0 +1,206 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node *head1 = NULL;
+struct node *head2 = NULL;
+
+struct node* create()
+{
+    struct node *head = NULL, *temp, *newnode;
+    int n, i;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++)
+    {
+        newnode = (struct node*)malloc(sizeof(struct node));
+
+        if(newnode == NULL)
+        {
+            printf("Memory allocation failed!\n");
+            exit(1);
+        }
+
+        printf("Enter data: ");
+        scanf("%d", &newnode->data);
+
+        newnode->next = NULL;
+
+        if(head == NULL)
+        {
+            head = newnode;
+            temp = newnode;
+        }
+        else
+        {
+            temp->next = newnode;
+            temp = newnode;
+        }
+    }
+
+    return head;
+}
+
+void display(struct node *head)
+{
+    struct node *temp = head;
+
+    if(head == NULL)
+    {
+        printf("Linked list is empty!\n");
+        return;
+    }
+
+    printf("Linked List: ");
+
+    while(temp != NULL)
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+struct node* reverse(struct node *head)
+{
+    struct node *prev = NULL;
+    struct node *current = head;
+    struct node *nextnode;
+
+    while(current != NULL)
+    {
+        nextnode = current->next;
+        current->next = prev;
+        prev = current;
+        current = nextnode;
+    }
+
+    return prev;
+}
+
+void sort(struct node *head)
+{
+    struct node *i, *j;
+    int temp;
+
+    if(head == NULL)
+        return;
+
+    for(i = head; i->next != NULL; i = i->next)
+    {
+        for(j = i->next; j != NULL; j = j->next)
+        {
+            if(i->data > j->data)
+            {
+                temp = i->data;
+                i->data = j->data;
+                j->data = temp;
+            }
+        }
+    }
+
+    printf("List sorted successfully!\n");
+}
+
+struct node* concatenate(struct node *head1, struct node *head2)
+{
+    struct node *temp;
+
+    if(head1 == NULL)
+        return head2;
+
+    if(head2 == NULL)
+        return head1;
+
+    temp = head1;
+
+    while(temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+
+    temp->next = head2;
+
+    return head1;
+}
+
+int main()
+{
+    int choice;
+
+    while(1)
+    {
+        printf("\n= SINGLY LINKED LIST MENU =\n");
+        printf("1. Create First Linked List\n");
+        printf("2. Create Second Linked List\n");
+        printf("3. Display First Linked List\n");
+        printf("4. Display Second Linked List\n");
+        printf("5. Reverse First Linked List\n");
+        printf("6. Sort First Linked List\n");
+        printf("7. Concatenate Two Linked Lists\n");
+        printf("8. Display Concatenated List\n");
+        printf("9. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                head1 = create();
+                break;
+
+            case 2:
+                head2 = create();
+                break;
+
+            case 3:
+                display(head1);
+                break;
+
+            case 4:
+                display(head2);
+                break;
+
+            case 5:
+                head1 = reverse(head1);
+                printf("Linked list reversed successfully!\n");
+                display(head1);
+                break;
+
+            case 6:
+                sort(head1);
+                display(head1);
+                break;
+
+            case 7:
+                head1 = concatenate(head1, head2);
+                head2 = NULL;
+                printf("Lists concatenated successfully!\n");
+                break;
+
+            case 8:
+                display(head1);
+                break;
+
+            case 9:
+                printf("Exiting program...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice! Try again.\n");
+        }
+    }
+
+    return 0;
+}
